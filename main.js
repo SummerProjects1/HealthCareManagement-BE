@@ -17,6 +17,7 @@ mongoose.connection.on('error',(err)=>{
 	console.log(err);
 });
 
+//added required apps
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/appointment', appointmentRoute);
