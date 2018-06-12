@@ -6,6 +6,7 @@ var cors = require('cors');
 const appointmentRoute = require('./routes/appointmentRoute');
 const patientRoute = require('./routes/patientRoute');
 
+//Initialize express
 var app = express(); 
 
 //mongodb connection by nagarjuna

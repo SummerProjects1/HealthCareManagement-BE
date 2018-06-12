@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const Patient = require('../models/patientModel');
-
+//added by rekha
 router.delete('/deletePatient/:id', (req, res, next)=>{
 	Patient.remove({_id: req.params.id},function(err, result){
 		if(err){
