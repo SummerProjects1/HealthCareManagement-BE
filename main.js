@@ -5,6 +5,7 @@ var cors = require('cors');
 
 const appointmentRoute = require('./routes/appointmentRoute');
 const patientRoute = require('./routes/patientRoute');
+const prescriptionRoute = require('./routes/prescriptionRoute');
 
 //Initialize express
 var app = express(); 
@@ -23,6 +24,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/appointment', appointmentRoute);
 app.use('/patient', patientRoute);
+app.use('/prescript', prescriptionRoute);
 
 //Server port
 const PORT = 4003;
