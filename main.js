@@ -24,6 +24,7 @@ app.use(bodyParser.json());
 app.use('/appointment', appointmentRoute);
 app.use('/patient', patientRoute);
 
+//Server port
 const PORT = 4003;
 app.listen(PORT, () =>{
 	console.log(" node server started at port number 4003");
