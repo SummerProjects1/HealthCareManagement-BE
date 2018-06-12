@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 const patientSchema = mongoose.Schema({
-/**/
+
 	userName:{
 		type: String,
 		required: true
