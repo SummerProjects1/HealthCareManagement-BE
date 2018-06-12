@@ -1,3 +1,4 @@
+/*mangoose */
 var mongoose = require('mongoose');
 const patientSchema = mongoose.Schema({
 
