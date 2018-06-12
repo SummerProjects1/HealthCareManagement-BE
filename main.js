@@ -8,7 +8,7 @@ const patientRoute = require('./routes/patientRoute');
 
 var app = express(); 
 
-//mongodb connection
+//mongodb connection by nagarjuna
 mongoose.connect('mongodb://localhost:27017/healthmanagement');
 mongoose.connection.on('connected',() =>{
 	console.log("connected to mongodb at port 27017");
