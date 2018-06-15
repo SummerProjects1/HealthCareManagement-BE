@@ -42,6 +42,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.json());
 
+//Passport middleware
+/* app.use(passport.initialize());
+app.use(passport.session());
+
+require('./config/passport')(passport); */
+
+
 app.use('/appointment', appointmentRoute);
 app.use('/patient', patientRoute);
 app.use('/prescript', prescriptionRoute);
