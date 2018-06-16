@@ -11,6 +11,7 @@ const patientRoute = require('./routes/patientRoute');
 const prescriptionRoute = require('./routes/prescriptionRoute');
 const patientsRoute = require('./routes/patientsRoute');
 const adminsRoute = require('./routes/adminsRoute');
+const doctorsRoute = require('./routes/doctorsRoute');
 
 //Initialize express
 var app = express(); 
@@ -57,6 +58,7 @@ app.use('/prescript', prescriptionRoute);
 app.use('/users', usersRoute);
 app.use('/patients', patientsRoute);
 app.use('/admin', adminsRoute);
+app.use('/doctor', doctorsRoute);
 
 //Server port
 const PORT = 4003;
