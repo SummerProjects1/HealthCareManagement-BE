@@ -9,6 +9,7 @@ const usersRoute = require('./routes/usersRoute');
 const appointmentRoute = require('./routes/appointmentRoute');
 const patientRoute = require('./routes/patientRoute');
 const prescriptionRoute = require('./routes/prescriptionRoute');
+const adminRoute = require('./routes/adminRoute');
 
 //Initialize express
 var app = express(); 
@@ -53,6 +54,7 @@ app.use('/appointment', appointmentRoute);
 app.use('/patient', patientRoute);
 app.use('/prescript', prescriptionRoute);
 app.use('/users', usersRoute);
+app.use('/admin', patientRoute);
 
 //Server port
 const PORT = 4003;
