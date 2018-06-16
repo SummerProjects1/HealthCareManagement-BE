@@ -58,11 +58,8 @@ app.use('/appointment', appointmentRoute);
 app.use('/patient', patientRoute);
 app.use('/prescript', prescriptionRoute);
 app.use('/users', usersRoute);
-<<<<<<< HEAD
 app.use('/patients', patientsRoute);
-=======
 app.use('/admin', patientRoute);
->>>>>>> c410e657e25abc73f8dc5fb3151fd33e47422ebc
 
 //Server port
 const PORT = 4003;
