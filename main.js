@@ -9,11 +9,8 @@ const usersRoute = require('./routes/usersRoute');
 const appointmentRoute = require('./routes/appointmentRoute');
 const patientRoute = require('./routes/patientRoute');
 const prescriptionRoute = require('./routes/prescriptionRoute');
-<<<<<<< HEAD
 const patientsRoute = require('./routes/patientsRoute');
-=======
 const adminRoute = require('./routes/adminRoute');
->>>>>>> c410e657e25abc73f8dc5fb3151fd33e47422ebc
 
 //Initialize express
 var app = express(); 
