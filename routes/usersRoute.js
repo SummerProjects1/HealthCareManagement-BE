@@ -83,11 +83,10 @@ router.post('/register', (req, res, next) => {
 			}
 			
 		} else{
-			console.log("2");
 			let helperOptions = {
-				from: '"HipCatC Application"<dev.nagarjuna2018@gmail.com>"',
+				from: 'HipCatC Application, hipcatc@localhost.com',
 				to:user.email,
-				subject: "HipCat C application account activation link "+newUser.firstname,
+				subject: "HipCat C  account activation link "+newUser.firstname,
 				text: 'Hello '+newUser.firstname+'\n\nThank you for registering with us!!'+
 				'Please click on the below link to activate your account. \n http://localhost:4200/activate/'+newUser.temporaryToken,
 				html:'Hello <strong>'+newUser.firstname+'</strong>,<br><br>Thank you for registering with us!!<br><br>'+
@@ -116,9 +115,9 @@ router.put('/activate/:token', function(req, res) {
 		var token = req.params.token; 
 		jwt.verify(token, secret, function(err, decoded) {
 			if (err) {
-				res.status("200").send({ success: false, message: 'Activation link has expired.' }); 
+				res.json({ success: false, message: 'Activation link has expired.' }); 
 			} else if (!user) {
-				res.status("200").send({ success: false, message: 'Activation link has expired.' }); 
+				res.json({ success: false, message: 'Activation link has expired.' }); 
 			} else {
 				user.temporaryToken = false;
 				user.isActivated = true; 
@@ -127,11 +126,13 @@ router.put('/activate/:token', function(req, res) {
 						console.log(err); 
 					} else {
 						var email = {
-							from: 'Localhost Staff, staff@localhost.com',
+							from: 'HipCatC Application, hipcatc@localhost.com',
 							to: user.email,
-							subject: 'Localhost Account Activated',
-							text: 'Hello ' + user.firstname + ', \n\n Your account has been successfully activated!',
+							subject: 'HipCatC Account Activated',
+							text: 'Hello ' + user.firstname + ', \n\n Your account has been successfully activated!'
+									+'\n\n Please click here to login: http://localhost:4200/',
 							html: 'Hello<strong> ' + user.firstname + '</strong>,<br><br>Your account has been successfully activated!'
+									+'<br><br> Please click here to login <a href="http://localhost:4200/"></a>'
 						};
 						transporter.sendMail(email, function(err, info) {
 							if (err) console.log(err); 
@@ -143,6 +144,45 @@ router.put('/activate/:token', function(req, res) {
 		});
 	});
 });
+
+router.put('/resendLink', function(req, res) {
+	console.log('email'+req.body.email)
+	User.findOne({ email: req.body.email }).select('username firstname lastname email temporaryToken isActivated').exec(function(err, user) {
+		if (err){
+			console.log(err); 
+			throw err;
+		} else{
+			if(user != null){
+				if(user.isActivated){ 
+					res.json({success: true, code:'USERALREADYACTIVATED', message: 'User account already activated !!'})
+				}else{
+					user.temporaryToken = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '24h' });
+					user.save(function(err) {
+						if (err) {
+							console.log(err); 
+						} else {	
+							var email = {
+								from: 'HipCatC Application, hipcatc@localhost.com',
+								to: user.email,
+								subject: 'HipCatC Activation Link Request',
+								text: 'Hello ' + user.firstname + ', \n\n You recently requested a new account activation link. Please click on the following link to complete your activation: http://localhost:4200/activate/' + user.temporaryToken,
+								html: 'Hello<strong> ' + user.firstname + '</strong>,<br><br>You recently requested a new account activation link. Please click on the link below to complete your activation:<br><br><a href="http://localhost:4200/activate/' + user.temporaryToken + '">http://localhost:4200/activate/</a>'
+							};
+							transporter.sendMail(email, function(err, info) {
+								if (err) console.log(err); 
+							});
+							res.json({ success: true, code:'ACTIVATIONLINKSENT', message: 'Activation link has been sent to ' + user.email + '!' });
+						}
+					});
+				}
+			}else{
+				res.json({ success: false, code:'USERNOTEXIST', message: 'User doesnt exist.' });
+			}
+			
+		}
+	});
+});
+
 
 //Authenticate
 router.post('/authenticate', (req, res, next) => {
