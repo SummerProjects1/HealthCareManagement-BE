@@ -14,10 +14,12 @@ const UserSchema = mongoose.Schema({
 	},
 	username: {
 		type: String,
+		unique: true,
 		required: true
 	},
 	email: {
 		type: String,
+		unique: true,
 		required: true
 	},
 	password: {
@@ -30,6 +32,15 @@ const UserSchema = mongoose.Schema({
     },
     contact: {
 		type: String,
+		required: true
+	},
+	temporaryToken:{
+		type: String,
+		required: true
+	},
+	isActivated:{
+		type: Boolean,
+		default: false,
 		required: true
 	}
 
