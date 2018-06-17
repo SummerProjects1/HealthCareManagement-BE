@@ -29,7 +29,7 @@ let helperOptions = {
 	text: "Thank you for registering with us!!"
 };
 
-sgMail.setApiKey('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');
+sgMail.setApiKey(config.SENDGRID_API_KEY);
 
 const msg = {
 	to: 'nagarjunakuppala07@gmail.com',
