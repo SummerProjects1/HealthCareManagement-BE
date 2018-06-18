@@ -273,33 +273,38 @@ router.post('/authenticate', (req, res, next) => {
 	User.getUserByUsername(username, (err, user) => {
 		if (err) console.log(err);
 		if (!user) {
-			return res.json({ success: false, msg: 'User not found' });
-		}
-
-		User.comparePassword(password, user.password, (err, isMatch) => {
-			if (err) throw err;
-			console.log('isMatch '+isMatch);
-			if (isMatch) {
-				const token = jwt.sign({ data: user }, config.secret, {
-					expiresIn: '1h' //1 week
-				});
-
-				res.json({
-					success: true,
-					token: 'JWT ' + token,
-					user: {
-						id: user._id,
-						firstname: user.firstname,
-						lastname: user.lastname,
-						username: user.username,
-						email: user.email,
-						contact: user.contact
+			return res.json({ success: false, code: 'USERNOTFOUND', msg: 'User not found' });
+		}else{
+			if(user.isActivated){
+				User.comparePassword(password, user.password, (err, isMatch) => {
+					if (err) throw err;
+					console.log('isMatch '+isMatch);
+					if (isMatch) {
+						const token = jwt.sign({ data: user }, config.secret, {
+							expiresIn: '1h' //1 week
+						});
+		
+						res.json({
+							success: true,
+							token: 'JWT ' + token,
+							user: {
+								id: user._id,
+								firstname: user.firstname,
+								lastname: user.lastname,
+								username: user.username,
+								email: user.email,
+								contact: user.contact
+							}
+						});
+					} else {
+						return res.json({ success: false,  code: 'PASSWORDWRONG', msg: 'Wrong credentials. Please check.' });
 					}
 				});
-			} else {
-				return res.json({ success: false, msg: 'Wrong Password' });
+			}else{
+				return res.json({ success: false,  code: 'USERNOTACTIVATED', msg: 'User Acoount is not yet activated. Please activate your account.'
+														+ 'If you not received an email.' });
 			}
-		});
+		}
 	});
 });
 
