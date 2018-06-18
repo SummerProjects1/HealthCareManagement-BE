@@ -75,7 +75,6 @@ router.post('/register', (req, res, next) => {
 	newUser.retypepassword = req.body.retypepassword;
 	newUser.contact = req.body.contact;
 	newUser.temporaryToken = jwt.sign({ username: newUser.username, email: newUser.email }, secret, { expiresIn: '24h' }); // Create a token for activating account through e-mail
-	console.log(newUser);
 	User.addUser(newUser, (err, user) => {
 		if (err) {
 			if (err.code == 11000) {
@@ -146,7 +145,6 @@ router.put('/activate/:token', function (req, res) {
 });
 
 router.put('/resendLink', function (req, res) {
-	console.log('email' + req.body.email)
 	User.findOne({ email: req.body.email }).select('username firstname lastname email temporaryToken isActivated').exec(function (err, user) {
 		if (err) {
 			console.log(err);
@@ -184,7 +182,6 @@ router.put('/resendLink', function (req, res) {
 });
 
 router.put('/forgotPwd', function (req, res) {
-	console.log('email' + req.body.email)
 	User.findOne({ email: req.body.email }).select('username firstname lastname email temporaryToken isActivated').exec(function (err, user) {
 		if (err) {
 			console.log(err);
@@ -220,7 +217,6 @@ router.put('/forgotPwd', function (req, res) {
 });
 
 router.put('/resetPwd', function (req, res) {
-	console.log('email' + req.body.token)
 	User.findOne({ temporaryToken: req.body.token }, function (err, user) {
 		if (err) {
 			console.log(err);
@@ -268,8 +264,6 @@ router.put('/resetPwd', function (req, res) {
 router.post('/authenticate', (req, res, next) => {
 	const username = req.body.username;
 	const password = req.body.password;
-	console.log(username);
-	console.log(password);
 	User.getUserByUsername(username, (err, user) => {
 		if (err) console.log(err);
 		if (!user) {
@@ -278,10 +272,9 @@ router.post('/authenticate', (req, res, next) => {
 			if(user.isActivated){
 				User.comparePassword(password, user.password, (err, isMatch) => {
 					if (err) throw err;
-					console.log('isMatch '+isMatch);
 					if (isMatch) {
 						const token = jwt.sign({ data: user }, config.secret, {
-							expiresIn: '1h' //1 week
+							expiresIn: '1h' //1 hour
 						});
 		
 						res.json({
