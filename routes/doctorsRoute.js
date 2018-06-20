@@ -29,7 +29,6 @@ router.post('/addDoctor', (req,res,next) => {
         department:req.body.department,
         gender:req.body.gender,
         dob:req.body.gender,
-		img: req.body.img,
     });
     Doctor.addDoctor(newDoctor,(err, doctor) => {
         if(err) {
