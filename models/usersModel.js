@@ -42,6 +42,11 @@ const UserSchema = mongoose.Schema({
 		type: Boolean,
 		default: false,
 		required: true
+	},
+	userType: {
+		type: String,
+		default: 'patient',
+		required: true
 	}
 
 });

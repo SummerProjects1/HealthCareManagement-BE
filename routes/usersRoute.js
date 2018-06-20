@@ -74,6 +74,8 @@ router.post('/register', (req, res, next) => {
 	newUser.password = req.body.password;
 	newUser.retypepassword = req.body.retypepassword;
 	newUser.contact = req.body.contact;
+	newUser.userType = req.body.userType;
+	newUser.isActivated = true;
 	newUser.temporaryToken = jwt.sign({ username: newUser.username, email: newUser.email }, secret, { expiresIn: '24h' }); // Create a token for activating account through e-mail
 	User.addUser(newUser, (err, user) => {
 		if (err) {
@@ -286,7 +288,8 @@ router.post('/authenticate', (req, res, next) => {
 								lastname: user.lastname,
 								username: user.username,
 								email: user.email,
-								contact: user.contact
+								contact: user.contact,
+								userType: user.userType
 							}
 						});
 					} else {
