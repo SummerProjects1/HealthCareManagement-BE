@@ -41,7 +41,7 @@ router.post('/addPrescription', (req, res, next)=>{
 	let prescription = new Prescription({
 		prescriptionDate:req.body.prescriptionDate,
 		prescriptionTime:req.body.prescriptionTime,
-		selectPatient: req.body.selectPatient,
+		patientName: req.body.patientName,
 		medication: req.body.medication
 	});
 	prescription.save((err, prescription)=>{

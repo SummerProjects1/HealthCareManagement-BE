@@ -14,7 +14,7 @@ const prescriptionSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
-	selectPatient:{
+	patientName:{
         type: String,
 		required: true
 	},
