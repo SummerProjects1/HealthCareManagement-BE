@@ -92,9 +92,9 @@ router.put('/editPatient/:id', (req, res, next)=>{
 }, 
 function(err, result){
 	if(err){
-		res.json(err);
+		res.json({success: false, msg:"Something went wrong"});
 	}else{
-		res.json(result);
+		res.json({success: true, msg:"Patient details updated successfully"});
 	}
 })
 });
