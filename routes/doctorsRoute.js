@@ -9,8 +9,21 @@ router.get('/getDoctor',(req,res) => {
 			res.json({success: false, message: `Failed to load Doctor. Error: ${err}`});
 		}
 		else {
-			res.write(JSON.stringify({success: true, doctors:doctors}, null, 2));
+			res.json(JSON.stringify({success: true, doctors:doctors}, null, 2));
             res.end();
+		}
+	});
+});
+
+//ajax call to get doctor names
+router.get('/getDoctorNames/:pattern',(req,res) => {
+	var matchingPattern = req.params.pattern;
+	Doctor.getDoctorNamesByAjax(matchingPattern, (err, doctors) => {
+		if(err) {
+			res.json({success: false, message: `Failed to load Doctor. Error: ${err}`});
+		}
+		else {
+			res.json({success: true, doctors:doctors});
 		}
 	});
 });
@@ -20,15 +33,13 @@ router.post('/addDoctor', (req,res,next) => {
         firstName: req.body.firstName,
 		lastName: req.body.lastName,
 		username: req.body.username,
-		password: req.body.password,
-		retypepassword: req.body.retypepassword,
 		contactNumber: req.body.contactNumber,
 		email: req.body.email,
         address: req.body.address,
         specialization:req.body.specialization,
         department:req.body.department,
         gender:req.body.gender,
-        dob:req.body.gender,
+        dob:req.body.dob,
 		img: req.body.img,
     });
     Doctor.addDoctor(newDoctor,(err, doctor) => {

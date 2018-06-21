@@ -33,10 +33,6 @@ const AdminSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
-	img: {
-		data: Buffer,
-		contentType: String
-	},
 });
 
 /* Exporting Admin schema for use in other modules */

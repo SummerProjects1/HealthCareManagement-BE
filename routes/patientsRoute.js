@@ -18,6 +18,18 @@ router.get('/getPatient',(req,res) => {
 	});
 });
 
+router.get('/patientDetails/:email',(req,res) => {
+	var email = req.params.email;
+	Patient.getpatientByEmail(email, (err, patient) => {
+		if(err) {
+			res.json({success: false, message: `Failed to load Patient. Error: ${err}`});
+		}
+		else {
+			res.json({success: true, patient:patient});
+		}
+	});
+});
+
 //POST HTTP method to /patient/addPatient
 router.post('/addPatient', (req,res,next) => {
 	//res.send("POST");

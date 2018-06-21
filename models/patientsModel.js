@@ -73,6 +73,12 @@ module.exports.getAllPatients = (callback) => {
     Patients.find(callback);
 }
 
+module.exports.getpatientByEmail = (email, callback) => {
+	console.log(email);
+	let query = {"email": email};
+	Patients.findOne(query, callback);
+}
+
 //newPatient.save is used to insert the document into MongoDB
 module.exports.addPatient = (newPatient, callback) => {
     newPatient.save(callback);
