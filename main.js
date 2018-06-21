@@ -7,7 +7,6 @@ const passport = require('passport');
 const config = require('./config/database');
 const usersRoute = require('./routes/usersRoute');
 const appointmentRoute = require('./routes/appointmentRoute');
-const patientRoute = require('./routes/patientRoute');
 const prescriptionRoute = require('./routes/prescriptionRoute');
 const patientsRoute = require('./routes/patientsRoute');
 const adminsRoute = require('./routes/adminsRoute');
@@ -53,7 +52,6 @@ require('./config/passport')(passport); */
 
 
 app.use('/appointment', appointmentRoute);
-app.use('/patient', patientRoute);
 app.use('/prescript', prescriptionRoute);
 app.use('/users', usersRoute);
 app.use('/patients', patientsRoute);

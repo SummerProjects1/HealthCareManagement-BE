@@ -37,7 +37,6 @@ router.post('/addPatient', (req,res,next) => {
         firstName: req.body.firstName,
 		lastName: req.body.lastName,
 		username: req.body.username,
-		password: req.body.password,
 		dateOfBirth: req.body.dateOfBirth,
 		gender: req.body.gender,
 		age: req.body.age,
@@ -77,6 +76,39 @@ router.delete('/deletePatient/:id', (req,res,next)=> {
         }
         else
             res.json({success:false});
+    });
+});
+
+router.put('/editPatient/:id', (req, res, next)=>{
+	Patient.findOneAndUpdate({_id: req.params.id},{
+	$set:{
+		userName: req.body.userName,
+		firstName: req.body.firstName,
+		lastName: req.body.lastName,
+		address: req.body.address,
+		contactNumber: req.body.contactNumber,
+		email: req.body.email
+	}
+}, 
+function(err, result){
+	if(err){
+		res.json(err);
+	}else{
+		res.json(result);
+	}
+})
+});
+
+router.get('/patientDetails/:uName', function(req, res) {
+    console.log("I received a GET request");
+    var name = req.params.uName;
+    console.log("Name: " + name);
+    Patient.find({ userName: name }, function(err, patient) {
+    	if(err){
+			res.json(err);
+		}else{
+			res.json(patient);
+		}
     });
 });
 
