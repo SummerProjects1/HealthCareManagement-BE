@@ -85,3 +85,9 @@ module.exports.deletePatientById = (id, callback) => {
     let query = {_id: id};
     Patients.remove(query, callback);
 }
+
+module.exports.getPatientNamesByAjax = function(matchingPattern, callback){
+	var matchPattern = new RegExp('^'+matchingPattern, "i");
+	const query = {$or:[{"firstName": matchPattern},{"lastName": matchPattern}]}; 
+	Patients.find(query, callback);
+}

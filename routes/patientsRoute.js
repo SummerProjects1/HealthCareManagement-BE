@@ -18,6 +18,22 @@ router.get('/getPatient',(req,res) => {
 	});
 });
 
+//Ajax call to get patient Names
+router.get('/getPatientNames/:pattern',(req,res) => {
+	var matchingPattern = req.params.pattern;
+	console.log("pattern"+ matchingPattern);
+	Patient.getPatientNamesByAjax(matchingPattern, (err, patient) => {
+		if(err) {
+			res.json({success: false, message: `Failed to load Patient. Error: ${err}`});
+			console.log(err);
+		}
+		else {
+			res.json({success: true, patient:patient});
+		}
+	});
+});
+
+
 router.get('/patientDetails/:email',(req,res) => {
 	var email = req.params.email;
 	Patient.getpatientByEmail(email, (err, patient) => {
