@@ -14,14 +14,6 @@ const DoctorSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
-	password: {
-		type: String,
-		required: true
-	},
-	retypepassword: {
-		type: String,
-		required: true
-	},
 	contactNumber: {
 		type: Number,
 		required: true
@@ -61,6 +53,13 @@ const Doctors = module.exports = mongoose.model('Doctors', DoctorSchema );
 /*Returns list of Doctors */
 module.exports.getAllDoctors = (callback) => {
     Doctors.find(callback);
+}
+
+module.exports.getDoctorNamesByAjax = function(matchingPattern, callback){
+	var matchPattern = new RegExp('^'+matchingPattern, "i");
+
+	const query = {$or:[{"firstName": matchPattern},{"lastName": matchPattern}]}; 
+	Doctors.find(query, callback);
 }
 
 /* Adds new Doctor into the mongodb database*/

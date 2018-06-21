@@ -58,7 +58,7 @@ module.exports.getUserById = function(id, callback){
 }
 
 module.exports.getUserByUsername = function(username, callback){
-    const query = {username : username}
+    const query = { $or: [{"username": username}, {"email": username}]}
     User.findOne(query, callback);
 }
 
