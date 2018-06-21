@@ -80,9 +80,9 @@ router.get('/prescriptListFilter/:uEmail', function(req, res) {
     console.log("Email: " + email);
     Prescription.find({$or:[{doctorEmail: email},{patientEmail: email}]}, function(err, result) {
     	if(err){
-			res.json(err);
+			res.json({success: false, msg: "Something went wrong. Please try again"});
 		}else{
-			res.json(result);
+			res.json({success: true, prescriptions: result});
 		}
     });
 });
