@@ -58,6 +58,11 @@ module.exports.getDoctorNamesByAjax = function(matchingPattern, callback){
 	Doctors.find(query, callback);
 }
 
+module.exports.getDoctorByEmail = (email, callback) => {
+	console.log(email);
+	let query = {"email": email};
+	Doctors.findOne(query, callback);
+}
 /* Adds new Doctor into the mongodb database*/
 module.exports.addDoctor = (newDoctor, callback) => {
     newDoctor.save(callback);
