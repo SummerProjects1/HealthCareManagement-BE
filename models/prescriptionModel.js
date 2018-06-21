@@ -14,7 +14,27 @@ const prescriptionSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
-	patientName:{
+	patientFName:{
+        type: String,
+		required: true
+	},
+	patientLName:{
+        type: String,
+		required: true
+	},
+	patientEmail:{
+        type: String,
+		required: true
+	},
+	doctorFName:{
+        type: String,
+		required: true
+	},
+	doctorLName:{
+        type: String,
+		required: true
+	},
+	doctorEmail:{
         type: String,
 		required: true
 	},
@@ -22,9 +42,6 @@ const prescriptionSchema = mongoose.Schema({
         type: String,
 		required: true
 	}
-
-
-
 
 	/* prescriptionType:{
 		type: String,

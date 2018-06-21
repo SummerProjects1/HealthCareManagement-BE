@@ -19,11 +19,15 @@ router.put('/editPrescript/:id', (req, res, next)=>{
 	console.log('id'+ req.params.id);
 	Prescription.findOneAndUpdate({_id: req.params.id},{
 	$set:{
-		prescriptionType: req.body.prescriptionType,
-		doctorName: req.body.doctorName,
-		prescriptionDate: req.body.prescriptionDate,
-		prescriptionMessage: req.body.prescriptionMessage,
-		prescriptionStatus: req.body.prescriptionStatus
+		prescriptionDate:req.body.prescriptionDate,
+		prescriptionTime:req.body.prescriptionTime,
+		patientFName: req.body.patientFName,
+		patientLName: req.body.patientLName,
+		patientEmail: req.body.patientEmail,
+		doctorFName: req.body.doctorFName,
+		doctorLName: req.body.doctorLName,
+		doctorEmail: req.body.doctorEmail,
+		medication: req.body.medication
 	}
 }, 
 function(err, result){
@@ -41,16 +45,21 @@ router.post('/addPrescription', (req, res, next)=>{
 	let prescription = new Prescription({
 		prescriptionDate:req.body.prescriptionDate,
 		prescriptionTime:req.body.prescriptionTime,
-		patientName: req.body.patientName,
+		patientFName: req.body.patientFName,
+		patientLName: req.body.patientLName,
+		patientEmail: req.body.patientEmail,
+		doctorFName: req.body.doctorFName,
+		doctorLName: req.body.doctorLName,
+		doctorEmail: req.body.doctorEmail,
 		medication: req.body.medication
 	});
 	prescription.save((err, prescription)=>{
 		if(err){
-			res.json(err);
+			res.json({success: false, msg:"Something went wrong"});
 			console.log(err);
 		}else{
 			console.log("Prescription has been created successfully");
-			res.json({msg:"Prescription has been created successfully"});
+			res.json({success: true, msg:"Prescription has been created successfully"});
 		}
 	});
 });
