@@ -2,7 +2,31 @@ var mongoose = require('mongoose');
 
 const prescriptionSchema = mongoose.Schema({
 
-	prescriptionType:{
+	prescriptionDate:{
+		type: String,
+		required: true
+	},
+	prescriptionTime:{
+		type: String,
+		required: true
+	},
+	prescriptionTime:{
+		type: String,
+		required: true
+	},
+	selectPatient:{
+        type: String,
+		required: true
+	},
+	medication:{
+        type: String,
+		required: true
+	}
+
+
+
+
+	/* prescriptionType:{
 		type: String,
 		required: true
 	},
@@ -21,7 +45,7 @@ const prescriptionSchema = mongoose.Schema({
 	prescriptionStatus: {
 		type: String,
 		required: true
-	}
+	} */
 });
 
 const Prescription  = module.exports = mongoose.model('Prescription', prescriptionSchema);

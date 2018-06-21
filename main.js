@@ -16,7 +16,7 @@ const doctorsRoute = require('./routes/doctorsRoute');
 //Initialize express
 var app = express(); 
 
-//Connect to database
+//Connect to database   
 mongoose.connect('mongodb://localhost:27017/healthmanagement');
 
 //On connection 
@@ -54,7 +54,7 @@ require('./config/passport')(passport); */
 
 app.use('/appointment', appointmentRoute);
 app.use('/patient', patientRoute);
-app.use('/prescript', prescriptionRoute);
+app.use('/prescription', prescriptionRoute);
 app.use('/users', usersRoute);
 app.use('/patients', patientsRoute);
 app.use('/admin', adminsRoute);

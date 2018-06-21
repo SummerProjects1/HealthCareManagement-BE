@@ -3,6 +3,7 @@ var router = express.Router();
 
 const Prescription = require('../models/prescriptionModel');
 
+
 router.delete('/deletePrescipt/:id', (req, res, next)=>{
 	Prescription.remove({_id: req.params.id},function(err, result){
 		if(err){
@@ -34,15 +35,14 @@ function(err, result){
 })
 });
 
-router.post('/addPrescript', (req, res, next)=>{
+router.post('/addPrescription', (req, res, next)=>{
 	"use strict";
 	console.log(req.body);
 	let prescription = new Prescription({
-		prescriptionType: req.body.prescriptionType,
-		doctorName: req.body.doctorName,
-		prescriptionDate: req.body.prescriptionDate,
-		prescriptionMessage: req.body.prescriptionMessage,
-		prescriptionStatus: "Open"
+		prescriptionDate:req.body.prescriptionDate,
+		prescriptionTime:req.body.prescriptionTime,
+		selectPatient: req.body.selectPatient,
+		medication: req.body.medication
 	});
 	prescription.save((err, prescription)=>{
 		if(err){
