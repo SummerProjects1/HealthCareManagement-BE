@@ -9,7 +9,7 @@ router.get('/getDoctor',(req,res) => {
 			res.json({success: false, message: `Failed to load Doctor. Error: ${err}`});
 		}
 		else {
-			res.json(JSON.stringify({success: true, doctors:doctors}, null, 2));
+			res.json({success: true, doctors:doctors});
             res.end();
 		}
 	});
@@ -51,6 +51,18 @@ router.post('/addDoctor', (req,res,next) => {
             res.json({success:true, message: "Doctor added successfully."});
 
     });
+});
+
+router.get('/doctorDetails/:email',(req,res) => {
+	var email = req.params.email;
+	Doctor.getDoctorByEmail(email, (err, doctor) => {
+		if(err) {
+			res.json({success: false, message: `Failed to load Patient. Error: ${err}`});
+		}
+		else {
+			res.json({success: true, doctor:doctor});
+		}
+	});
 });
 
 router.delete('/deleteDoctor/:id', (req,res,next)=> {
