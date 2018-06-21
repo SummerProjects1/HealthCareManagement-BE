@@ -74,4 +74,17 @@ router.get('/prescripts', (req, res, next)=>{
 	});
 });
 
+router.get('/prescriptListFilter/:uEmail', function(req, res) {
+    console.log("I received a GET request");
+    var email = req.params.uEmail;
+    console.log("Email: " + email);
+    Prescription.find({$or:[{doctorEmail: email},{patientEmail: email}]}, function(err, result) {
+    	if(err){
+			res.json(err);
+		}else{
+			res.json(result);
+		}
+    });
+});
+
 module.exports = router;
