@@ -25,7 +25,6 @@ router.post('/addAdmin', (req,res,next) => {
 		contactNumber: req.body.contactNumber,
 		email: req.body.email,
 		address: req.body.address,
-		img: req.body.img,
     });
     Admin.addAdmin(newAdmin,(err, admin) => {
         if(err) {

@@ -41,10 +41,6 @@ const DoctorSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
-	img: {
-		data: Buffer,
-		contentType: String
-	},
 });
 
 /* Exporting Doctors schema for use in other modules */
