@@ -6,9 +6,13 @@ const appointmentSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
-	doctorName: {
+	doctorFName: {
 		type: String,
 		required: true
+	},
+	doctorLName: {
+		type: String,
+		required: false
 	},
 	appointDate: {
 		type: String,
@@ -23,6 +27,22 @@ const appointmentSchema = mongoose.Schema({
 		required: true
 	},
 	appointStatus: {
+		type: String,
+		required: true
+	},
+	doctorEmail:{
+		type: String,
+		required: true
+	},
+	patientFName: {
+		type: String,
+		required: false
+	},
+	patientLName: {
+		type: String,
+		required: false
+	},
+	patientEmail: {
 		type: String,
 		required: true
 	}

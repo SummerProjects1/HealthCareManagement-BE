@@ -40,7 +40,12 @@ router.post('/addAppointment', (req, res, next)=>{
 	console.log(req.body);
 	let appointment = new Appointment({
 		appointmentType: req.body.appointmentType,
-		doctorName: req.body.doctorName,
+		doctorFName: req.body.doctorFName,
+		doctorLName: req.body.doctorLName,
+		doctorEmail: req.body.doctorEmail,
+		patientFName: req.body.patientFName,
+		patientLName: req.body.patientLName,
+		patientEmail: req.body.patientEmail,
 		appointDate: req.body.appointDate,
 		appointTime: req.body.appointTime,
 		appointMessage: req.body.appointMessage,
@@ -48,11 +53,10 @@ router.post('/addAppointment', (req, res, next)=>{
 	});
 	appointment.save((err, appointment)=>{
 		if(err){
-			res.json(err);
-			console.log(err);
+			res.json({ status: false, msg:"Something went wrong while making an appointment. Please try again"});
 		}else{
 			console.log("Appointment has been created successfully");
-			res.json({msg:"Appointment has been created successfully"});
+			res.json({ status: true, msg:"Appointment has been created successfully"});
 		}
 	});
 });
