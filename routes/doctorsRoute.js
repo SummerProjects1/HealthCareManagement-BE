@@ -40,7 +40,7 @@ router.post('/addDoctor', (req,res,next) => {
         department:req.body.department,
         gender:req.body.gender,
         dob:req.body.dob,
-		img: req.body.img,
+		//img: req.body.img,
     });
     Doctor.addDoctor(newDoctor,(err, doctor) => {
         if(err) {
@@ -79,26 +79,28 @@ router.delete('/deleteDoctor/:id', (req,res,next)=> {
     });
 });
 
-module.exports = router;
-
-/*router.put('/editAdmin/:id', (req, res, next)=>{
-	Admin.findOneAndUpdate({_id: req.params.id},{
-	$set:{
-		userName: req.body.userName,
+router.put('/editDoctor/:id', function(req, res, next) {
+	var query = {
 		firstName: req.body.firstName,
 		lastName: req.body.lastName,
-        password: req.body.password,
-        retypepassword: req.body.retypepassword,
-		contact: req.body.contact,
-		email: req.body.email
-	}
-}, 
-function(err, result){
-	if(err){
-		res.json(err);
-	}else{
-		res.json(result);
-	}
-})
-});*/
+		username: req.body.username,
+		/*password: req.body.password,
+		retypepassword: req.body.retypepassword,*/
+		contactNumber: req.body.contactNumber,
+		email: req.body.email,
+		address: req.body.address,
+		specialization:form.value.specialization,
+        department:form.value.department,
+        gender:form.value.gender,
+        dob:form.value.dob
+	};
+	Doctor.findOneAndUpdate({_id:req.params.id}, query, function(err,doctor){
+		if(err){
+			res.json(err);
+		}else{
+			res.json(doctor);
+		}
+	});
+});
 
+module.exports = router;

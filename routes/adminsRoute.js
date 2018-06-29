@@ -20,11 +20,11 @@ router.post('/addAdmin', (req,res,next) => {
         firstName: req.body.firstName,
 		lastName: req.body.lastName,
 		username: req.body.username,
-		password: req.body.password,
-		retypepassword: req.body.retypepassword,
+		/*password: req.body.password,
+		retypepassword: req.body.retypepassword,*/
 		contactNumber: req.body.contactNumber,
 		email: req.body.email,
-		address: req.body.address,
+		//address: req.body.address,
     });
     Admin.addAdmin(newAdmin,(err, admin) => {
         if(err) {
@@ -51,26 +51,30 @@ router.delete('/deleteAdmin/:id', (req,res,next)=> {
     });
 });
 
-module.exports = router;
 
-/*router.put('/editAdmin/:id', (req, res, next)=>{
-	Admin.findOneAndUpdate({_id: req.params.id},{
-	$set:{
-		userName: req.body.userName,
+router.put('/editAdmin/:id', function(req, res, next) {
+	var query = {
 		firstName: req.body.firstName,
 		lastName: req.body.lastName,
-        password: req.body.password,
-        retypepassword: req.body.retypepassword,
-		contact: req.body.contact,
-		email: req.body.email
-	}
-}, 
-function(err, result){
-	if(err){
-		res.json(err);
-	}else{
-		res.json(result);
-	}
-})
-});*/
+		username: req.body.username,
+		/*password: req.body.password,
+		retypepassword: req.body.retypepassword,*/
+		contactNumber: req.body.contactNumber,
+		email: req.body.email,
+		//address: req.body.address
+	};
+	Admin.findOneAndUpdate({_id:req.params.id}, query, function(err,admin){
+		if(err){
+			res.json(err);
+		}else{
+			res.json(admin);
+		}
+	});
+});
+
+module.exports = router;
+
+
+
+
 
