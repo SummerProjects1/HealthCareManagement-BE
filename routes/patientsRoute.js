@@ -116,9 +116,7 @@ function(err, result){
 });
 
 router.get('/patientDetails/:uName', function(req, res) {
-    console.log("I received a GET request");
     var name = req.params.uName;
-    console.log("Name: " + name);
     Patient.find({ userName: name }, function(err, patient) {
     	if(err){
 			res.json(err);

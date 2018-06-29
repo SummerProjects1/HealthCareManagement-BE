@@ -4,6 +4,9 @@ const router = express.Router();
 var secret = 'harrypotter';
 const jwt = require('jsonwebtoken');
 const User = require('../models/usersModel');
+const Patient = require('../models/patientsModel');
+const Doctor = require('../models/doctorsModel');
+const Admin = require('../models/adminsModel');
 const config = require('../config/database');
 const sgMail = require('@sendgrid/mail');
 var nodemailer = require('nodemailer');
@@ -93,7 +96,7 @@ router.post('/register', (req, res, next) => {
 				html: 'Hello <strong>' + newUser.firstname + '</strong>,<br><br>Thank you for registering with us!!<br><br>' +
 					'Please click on the below link to activate your account. <br><a href="http://localhost:4200/activate/' + newUser.temporaryToken + '">http://localhost:4200/activate/</a>'
 			};
-			transporter.sendMail(helperOptions, (error, info) => {
+			/*transporter.sendMail(helperOptions, (error, info) => {
 				if (error) {
 					console.log(error);
 					res.json(error);
@@ -101,9 +104,8 @@ router.post('/register', (req, res, next) => {
 					console.log(info);
 					res.json({ success: true, msg: 'Account registered! Please check your e-mail for activation link.' });
 				}
-			});
-
-			console.log(user);
+			});*/
+			insertUserMainTableDetails(user);
 			res.json({ success: true, msg: 'Account registered! Please check your e-mail for activation link.' });
 		}
 	});
@@ -323,6 +325,49 @@ router.get('/users', (req, res, next) => {
 		}
 	});
 });
+
+var insertUserMainTableDetails = function(user) {
+	let newUserDetails = {
+        firstName: user.firstname,
+		lastName: user.lastname,
+		username: user.username,
+		contactNumber: user.contact,
+		email: user.email
+	};
+	console.log(user.userType.toLowerCase());
+	if(user.userType.toLowerCase() === 'admin'){
+		Admin.create(newUserDetails,(err, admin) => {
+			if(err) {
+				console.log({success: false, message: `Failed to add new Admin. Error: ${err}`});
+	
+			} else{
+				console.log({success:true, message: "Admin added successfully."});
+			}
+	
+		});
+	} else if(user.userType.toLowerCase() === 'doctor'){
+		console.log(user.userType.toLowerCase());
+		Doctor.create(newUserDetails,(err, doctor) => {
+			if(err) {
+				console.log({success: false, message: `Failed to add new Doctor. Error: ${err}`});
+	
+			}else{
+				console.log({success:true, message: "Doctor added successfully."});
+			}
+	
+		});
+	} else if(user.userType.toLowerCase() === 'patient') {
+		Patient.create(newUserDetails,(err, patient) => {
+			if(err) {
+				console.log({success: false, message: `Failed to add new patient. Error: ${err}`});
+	
+			} else{
+			   console.log({success:true, message: "Patient added successfully."});
+			}
+		});
+	}
+    
+}
 
 
 

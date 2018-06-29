@@ -20,27 +20,24 @@ const PatientSchema = mongoose.Schema({
 	},
 	gender: {
 		type: String,
-		required: true,
 		enum: ["Male", "Female"]
 	},
 	age: {
-		type: Number,
-		required: true
+		type: Number
 	},
 	contactNumber: {
 		type: Number,
 		required: true
 	},
 	email: {
-		type: String
-	},
-	address: {
 		type: String,
 		required: true
 	},
+	address: {
+		type: String
+	},
 	maritalStatus: {
 		type: String,
-		required: true,
 		enum: ["Married", "Single"]
 	},
 	img: {
@@ -48,8 +45,7 @@ const PatientSchema = mongoose.Schema({
 		contentType: String
 	},
 	bloodGroup: {
-		type: String,
-		required: true
+		type: String
 	},
 	bloodPressure: {
 		type: String

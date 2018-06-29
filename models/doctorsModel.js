@@ -19,27 +19,23 @@ const DoctorSchema = mongoose.Schema({
 		required: true
 	},
 	email: {
-		type: String
+		type: String,
+		required: true
 	},
 	address: {
-		type: String,
-		required: true
-    },
-    specialization: {
-		type: String,
-		required: true
-    },
-    department: {
-		type: String,
-		required: true
-    },
-    gender: {
-		type: String,
-		required: true
-    },
-    dob: {
-		type: String,
-		required: true
+		type: String
+  },
+  specialization: {
+		type: String
+  },
+  department: {
+		type: String
+  },
+  gender: {
+		type: String
+  },
+  dob: {
+		type: String
 	},
 });
 
@@ -65,6 +61,7 @@ module.exports.getDoctorByEmail = (email, callback) => {
 }
 /* Adds new Doctor into the mongodb database*/
 module.exports.addDoctor = (newDoctor, callback) => {
+	console.log("doctor model");
     newDoctor.save(callback);
 }
 

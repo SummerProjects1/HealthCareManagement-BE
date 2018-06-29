@@ -15,23 +15,21 @@ const AdminSchema = mongoose.Schema({
 		required: true
 	},
 	password: {
-		type: String,
-		required: true
+		type: String
 	},
 	retypepassword: {
-		type: String,
-		required: true
+		type: String
 	},
 	contactNumber: {
 		type: Number,
 		required: true
 	},
 	email: {
-		type: String
-	},
-	address: {
 		type: String,
 		required: true
+	},
+	address: {
+		type: String
 	},
 });
 
