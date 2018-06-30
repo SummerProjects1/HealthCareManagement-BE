@@ -4,7 +4,7 @@ var router = express.Router();
 const Prescription = require('../models/prescriptionModel');
 
 
-router.delete('/deletePrescipt/:id', (req, res, next)=>{
+/* router.delete('/deletePresciption/:id', (req, res, next)=>{
 	Prescription.remove({_id: req.params.id},function(err, result){
 		if(err){
 			res.json(err);
@@ -13,8 +13,24 @@ router.delete('/deletePrescipt/:id', (req, res, next)=>{
 		}
 	})
 });
+ */
 
-router.put('/editPrescript/:id', (req, res, next)=>{
+router.delete('/deletePrescription/:id', (req,res,next)=> {
+    let id = req.params.id;
+    Prescription.deletePrescriptionById(id,(err,list) => {
+        if(err) {
+            res.json({success:false, message: `Failed to delete the Prescription. Error: ${err}`});
+        }
+        else if(list) {
+            res.json({success:true, message: "Prescription deleted successfully"});
+        }
+        else
+            res.json({success:false});
+    });
+});
+
+
+/* router.put('/editPrescript/:id', (req, res, next)=>{
 	console.log('body'+ req.body.prescriptionDate);
 	console.log('id'+ req.params.id);
 	Prescription.findOneAndUpdate({_id: req.params.id},{
@@ -38,7 +54,7 @@ function(err, result){
 	}
 })
 });
-
+ */
 router.post('/addPrescription', (req, res, next)=>{
 	"use strict";
 	console.log(req.body);
@@ -48,6 +64,8 @@ router.post('/addPrescription', (req, res, next)=>{
 		patientFName: req.body.patientFName,
 		patientLName: req.body.patientLName,
 		patientEmail: req.body.patientEmail,
+		patientAge: req.body.patientAge,
+		patientGender: req.body.patientGender,
 		doctorFName: req.body.doctorFName,
 		doctorLName: req.body.doctorLName,
 		doctorEmail: req.body.doctorEmail,
@@ -64,7 +82,7 @@ router.post('/addPrescription', (req, res, next)=>{
 	});
 });
 
-router.get('/prescripts', (req, res, next)=>{
+/* router.get('/prescripts', (req, res, next)=>{
 	Prescription.find(function(err, prescription){
 		if(err){
 			res.json(err);
@@ -72,7 +90,7 @@ router.get('/prescripts', (req, res, next)=>{
 			res.json(prescription);
 		}
 	});
-});
+}); */
 
 router.get('/prescriptListFilter/:uEmail', function(req, res) {
     console.log("I received a GET request");
@@ -85,6 +103,32 @@ router.get('/prescriptListFilter/:uEmail', function(req, res) {
 			res.json({success: true, prescriptions: result});
 		}
     });
+});
+
+
+router.put('/editPrescription/:id', function(req, res, next) {
+	console.log("in router module...")
+	var query = {
+		firstName: req.body.firstName,
+		prescriptionDate:  req.body.prescriptionDate,
+		prescriptionTime:  req.body.prescriptionTime,
+		patientFName:  req.body. patientFName,
+		patientLName: req.body.patientLName,
+		patientEmail: req.body.patientEmail,
+		patientAge: req.body.patientAge,
+		patientGender: req.body.patientGender,
+		doctorFName: req.body.doctorFName,
+		doctorLName: req.body. doctorLName,
+		doctorEmail: req.body. doctorEmail,
+		medication:  req.body.medication,
+	};
+	Prescription.findOneAndUpdate({_id:req.params.id}, query, function(err,prescription){
+		if(err){
+			res.json(err);
+		}else{
+			res.json(prescription);
+		}
+	});
 });
 
 module.exports = router;
