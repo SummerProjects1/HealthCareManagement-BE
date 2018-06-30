@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const Doctor = require('../models/doctorsModel');
+const User = require('../models/usersModel');
 
 router.get('/getDoctor',(req,res) => {
 	Doctor.getAllDoctors((err, doctors) => {
@@ -33,6 +34,8 @@ router.post('/addDoctor', (req,res,next) => {
         firstName: req.body.firstName,
 		lastName: req.body.lastName,
 		username: req.body.username,
+		password: req.body.password,
+		retypepassword: req.body.retypepassword,
 		contactNumber: req.body.contactNumber,
 		email: req.body.email,
         address: req.body.address,
@@ -47,8 +50,11 @@ router.post('/addDoctor', (req,res,next) => {
             res.json({success: false, message: `Failed to add new Doctor. Error: ${err}`});
 
         }
-        else
-            res.json({success:true, message: "Doctor added successfully."});
+        else{
+			insertDoctorToUserTable(doctor);
+			res.json({success:true, message: "Doctor added successfully."});
+		}
+            
 
     });
 });
@@ -84,8 +90,8 @@ router.put('/editDoctor/:id', function(req, res, next) {
 		firstName: req.body.firstName,
 		lastName: req.body.lastName,
 		username: req.body.username,
-		/*password: req.body.password,
-		retypepassword: req.body.retypepassword,*/
+		password: req.body.password,
+		retypepassword: req.body.retypepassword,
 		contactNumber: req.body.contactNumber,
 		email: req.body.email,
 		address: req.body.address,
@@ -102,5 +108,32 @@ router.put('/editDoctor/:id', function(req, res, next) {
 		}
 	});
 });
+
+var insertDoctorToUserTable = function(doctor) {
+	let newUserDetails = {
+        firstname: doctor.firstName,
+		lastname: doctor.lastName,
+		username: doctor.username,
+		email: doctor.email,
+		password: doctor.password,
+		retypepassword: doctor.retypepassword,
+		contact: doctor.contactNumber,
+		userType:"doctor",
+		isActivated: true,
+		//temporaryToken = jwt.sign({ username: doctor.username, email: doctor.email }, secret, { expiresIn: '24h' }), // Create a token for activating account through e-mail
+		temporaryToken:"abc"
+	};
+	User.create(newUserDetails,(err, user) => {
+		if(err) {
+			console.log({success: false, message: `Failed to add new doctorr. Error: ${err}`});
+	
+		} 
+		else{
+			console.log({success:true, message: "Doctor added to user table successfully."});
+		}
+	
+	});
+    
+}
 
 module.exports = router;

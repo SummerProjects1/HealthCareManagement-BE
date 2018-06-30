@@ -14,12 +14,12 @@ const AdminSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
-	/*password: {
+	password: {
 		type: String
 	},
 	retypepassword: {
 		type: String
-	},*/
+	},
 	contactNumber: {
 		type: Number,
 		required: true

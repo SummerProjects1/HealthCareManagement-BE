@@ -14,6 +14,12 @@ const DoctorSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
+	password: {
+		type: String
+	},
+	retypepassword: {
+		type: String
+	},
 	contactNumber: {
 		type: Number,
 		required: true

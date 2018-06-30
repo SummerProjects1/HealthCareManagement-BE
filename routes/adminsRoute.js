@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const Admin = require('../models/adminsModel');
+const User = require('../models/usersModel');
 
 router.get('/getAdmin',(req,res) => {
 	Admin.getAllAdmins((err, admins) => {
@@ -20,8 +21,8 @@ router.post('/addAdmin', (req,res,next) => {
         firstName: req.body.firstName,
 		lastName: req.body.lastName,
 		username: req.body.username,
-		/*password: req.body.password,
-		retypepassword: req.body.retypepassword,*/
+		password: req.body.password,
+		retypepassword: req.body.retypepassword,
 		contactNumber: req.body.contactNumber,
 		email: req.body.email,
 		//address: req.body.address,
@@ -31,8 +32,12 @@ router.post('/addAdmin', (req,res,next) => {
             res.json({success: false, message: `Failed to add new Admin. Error: ${err}`});
 
         }
-        else
-            res.json({success:true, message: "Admin added successfully."});
+        else{
+			/* inserting admin to user table*/
+			insertAdminToUserTable(admin);
+			res.json({success:true, message: "Admin added successfully."});
+		}
+            
 
     });
 });
@@ -57,8 +62,8 @@ router.put('/editAdmin/:id', function(req, res, next) {
 		firstName: req.body.firstName,
 		lastName: req.body.lastName,
 		username: req.body.username,
-		/*password: req.body.password,
-		retypepassword: req.body.retypepassword,*/
+		password: req.body.password,
+		retypepassword: req.body.retypepassword,
 		contactNumber: req.body.contactNumber,
 		email: req.body.email,
 		//address: req.body.address
@@ -71,6 +76,33 @@ router.put('/editAdmin/:id', function(req, res, next) {
 		}
 	});
 });
+
+var insertAdminToUserTable = function(admin) {
+	let newUserDetails = {
+        firstname: admin.firstName,
+		lastname: admin.lastName,
+		username: admin.username,
+		email: admin.email,
+		password: admin.password,
+		retypepassword: admin.retypepassword,
+		contact: admin.contactNumber,
+		userType:"admin",
+		isActivated: true,
+		//temporaryToken = jwt.sign({ username: admin.username, email: admin.email }, secret, { expiresIn: '24h' }), // Create a token for activating account through e-mail
+		temporaryToken:"xyz"
+	};
+	User.create(newUserDetails,(err, user) => {
+		if(err) {
+			console.log({success: false, message: `Failed to add new Admin. Error: ${err}`});
+	
+		} 
+		else{
+			console.log({success:true, message: "Admin added to user table successfully."});
+		}
+	
+	});
+    
+}
 
 module.exports = router;
 
