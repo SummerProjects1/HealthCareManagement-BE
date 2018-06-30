@@ -14,8 +14,6 @@ router.delete('/deleteAppointment/:id', (req, res, next)=>{
 });
 
 router.put('/editAppointment/:id', (req, res, next)=>{
-	console.log('body'+ req.body.appointDate);
-	console.log('id'+ req.params.id);
 	Appointment.findOneAndUpdate({_id: req.params.id},{
 	$set:{
 		appointmentType: req.body.appointmentType,
@@ -72,9 +70,7 @@ router.get('/appointments', (req, res, next)=>{
 });
 
 router.get('/appointmentListFilter/:uEmail', function(req, res) {
-    console.log("I received a GET request");
     var email = req.params.uEmail;
-    console.log("Email: " + email);
     Appointment.find({$or:[{doctorEmail: email},{patientEmail: email}]}, function(err, result) {
     	if(err){
 			res.json(err);

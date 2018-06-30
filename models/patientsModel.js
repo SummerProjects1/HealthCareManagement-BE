@@ -54,7 +54,15 @@ const PatientSchema = mongoose.Schema({
 		type: String
 	},
 	Injury: {
+		type: String
+	},
+	patientProfilePicOriginalName: {
 		type: String,
+		required: false	
+	},
+    patientProfilePicFileName: {
+		type: String,
+		required: false
 	}
 });
 

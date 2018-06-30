@@ -21,7 +21,6 @@ router.get('/getPatient',(req,res) => {
 //Ajax call to get patient Names
 router.get('/getPatientNames/:pattern',(req,res) => {
 	var matchingPattern = req.params.pattern;
-	console.log("pattern"+ matchingPattern);
 	Patient.getPatientNamesByAjax(matchingPattern, (err, patient) => {
 		if(err) {
 			res.json({success: false, message: `Failed to load Patient. Error: ${err}`});
@@ -64,7 +63,10 @@ router.post('/addPatient', (req,res,next) => {
 		bloodGroup: req.body.bloodGroup,
 		bloodPressure: req.body.bloodPressure,
 		sugger: req.body.sugger,
-		Injury: req.body.Injury
+		Injury: req.body.Injury,
+		patientProfilePicOriginalName: req.body.patientProfilePicOriginalName,
+		patientProfilePicFileName: req.body.patientProfilePicFileName
+
     });
     Patient.addPatient(newPatient,(err, patient) => {
         if(err) {
@@ -103,7 +105,9 @@ router.put('/editPatient/:id', (req, res, next)=>{
 		lastName: req.body.lastName,
 		address: req.body.address,
 		contactNumber: req.body.contactNumber,
-		email: req.body.email
+		email: req.body.email,
+		patientProfilePicOriginalName: req.body.patientProfilePicOriginalName,
+		patientProfilePicFileName: req.body.patientProfilePicFileName
 	}
 }, 
 function(err, result){
