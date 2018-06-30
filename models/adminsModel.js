@@ -14,12 +14,12 @@ const AdminSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
-	password: {
+	/*password: {
 		type: String
 	},
 	retypepassword: {
 		type: String
-	},
+	},*/
 	contactNumber: {
 		type: Number,
 		required: true
@@ -28,9 +28,9 @@ const AdminSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
-	address: {
+	/*address: {
 		type: String
-	},
+	},*/
 });
 
 /* Exporting Admin schema for use in other modules */
@@ -51,3 +51,8 @@ module.exports.deleteAdminById = (id, callback) => {
     let query = {_id: id};
     Admins.remove(query, callback);
 }
+
+/*module.exports.findOneAndUpdate = (id, callback) => {
+	let query = {_id: id};
+    Admins.save(query,callback);
+}*/
