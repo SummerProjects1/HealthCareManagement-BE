@@ -95,16 +95,16 @@ router.put('/editDoctor/:id', function(req, res, next) {
 		contactNumber: req.body.contactNumber,
 		email: req.body.email,
 		address: req.body.address,
-		specialization:form.value.specialization,
-        department:form.value.department,
-        gender:form.value.gender,
-        dob:form.value.dob
+		specialization: req.body.specialization,
+        department: req.body.department,
+        gender: req.body.gender,
+        dob: req.body.dob
 	};
 	Doctor.findOneAndUpdate({_id:req.params.id}, query, function(err,doctor){
 		if(err){
-			res.json(err);
+			res.json({success:false, message: "Something went wrong. Please stry again."});
 		}else{
-			res.json(doctor);
+			res.json({success:true, message: "Doctor details updated successfully"});
 		}
 	});
 });

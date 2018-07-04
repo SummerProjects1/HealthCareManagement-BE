@@ -24,11 +24,11 @@ const prescriptionSchema = mongoose.Schema({
 	},
 	patientAge:{
 		type: String,
-		required: true
+		required: false
 	},
 	patientGender:{
 		type: String,
-		required: true
+		required: false
 	},
 	doctorFName:{
         type: String,
