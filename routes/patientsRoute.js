@@ -1,8 +1,11 @@
 //Require the express package and use express.Router()
 const express = require('express');
 const router = express.Router();
-
+const jwt = require('jsonwebtoken');
+var secret = 'harrypotter';
 const Patient = require('../models/patientsModel');
+const User = require('../models/usersModel');
+var deasync = require('deasync');
 
 //GET HTTP method to /patient/getPatient
 router.get('/getPatient',(req,res) => {
@@ -98,25 +101,33 @@ router.delete('/deletePatient/:id', (req,res,next)=> {
 });
 
 router.put('/editPatient/:id', (req, res, next)=>{
-	Patient.findOneAndUpdate({_id: req.params.id},{
-	$set:{
-		userName: req.body.userName,
-		firstName: req.body.firstName,
-		lastName: req.body.lastName,
-		address: req.body.address,
-		contactNumber: req.body.contactNumber,
-		email: req.body.email,
-		patientProfilePicOriginalName: req.body.patientProfilePicOriginalName,
-		patientProfilePicFileName: req.body.patientProfilePicFileName
-	}
-}, 
-function(err, result){
-	if(err){
-		res.json({success: false, msg:"Something went wrong"});
+	var isLoggedIn;
+	console.log(req.body)
+	isLoggedIn = validateUserLogin(req.body.username);
+
+	if(isLoggedIn){
+		Patient.findOneAndUpdate({_id: req.params.id},{
+			$set:{
+				userName: req.body.username,
+				firstName: req.body.firstName,
+				lastName: req.body.lastName,
+				address: req.body.address,
+				contactNumber: req.body.contactNumber,
+				email: req.body.email,
+				patientProfilePicOriginalName: req.body.patientProfilePicOriginalName,
+				patientProfilePicFileName: req.body.patientProfilePicFileName
+			}
+		}, 
+		function(err, result){
+			if(err){
+				res.json({success: false, msg:"Something went wrong"});
+			}else{
+				res.json({success: true, msg:"Patient details updated successfully"});
+			}
+		})
 	}else{
-		res.json({success: true, msg:"Patient details updated successfully"});
+		res.json({success: false, msg:"User Authentication Problem. Please Login with your credentials."});
 	}
-})
 });
 
 router.get('/patientDetails/:uName', function(req, res) {
@@ -129,5 +140,30 @@ router.get('/patientDetails/:uName', function(req, res) {
 		}
     });
 });
+
+ function validateUserLogin(userName) {
+	var isLoggedIn;
+	console.log(userName)
+	setTimeout(function(){	
+		User.find({ username: userName }, function(err, user) {
+			if(err){
+				isLoggedIn  = false;
+			}else{
+				console.log(user);
+				isLoggedIn = user[0].isLoggedIn;
+				if(isLoggedIn){
+					isLoggedIn  = true;
+				}else{
+					isLoggedIn  = false;
+				}	
+			}
+		});
+	}, 500);
+    while(isLoggedIn === undefined ) {
+		deasync.runLoopOnce();
+	}
+
+	return isLoggedIn;
+}
 
 module.exports = router;

@@ -47,6 +47,15 @@ const UserSchema = mongoose.Schema({
 		type: String,
 		default: 'patient',
 		required: true
+	},
+	isLoggedIn: {
+		type: Boolean,
+		required: false,
+		default: false
+	},
+	loggedInToken: {
+		type: String,
+		required: false
 	}
 
 });

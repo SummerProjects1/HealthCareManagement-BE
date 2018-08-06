@@ -96,15 +96,17 @@ router.post('/register', (req, res, next) => {
 				html: 'Hello <strong>' + newUser.firstname + '</strong>,<br><br>Thank you for registering with us!!<br><br>' +
 					'Please click on the below link to activate your account. <br><a href="http://localhost:4200/activate/' + newUser.temporaryToken + '">http://localhost:4200/activate/</a>'
 			};
-			/*transporter.sendMail(helperOptions, (error, info) => {
-				if (error) {
-					console.log(error);
-					res.json(error);
-				} else {
-					console.log(info);
-					res.json({ success: true, msg: 'Account registered! Please check your e-mail for activation link.' });
-				}
-			});*/
+			if(config.mailOptionturnOnOff){
+				transporter.sendMail(helperOptions, (error, info) => {
+					if (error) {
+						console.log(error);
+						res.json(error);
+					} else {
+						console.log(info);
+						res.json({ success: true, msg: 'Account registered! Please check your e-mail for activation link.' });
+					}
+				});
+			}
 			insertUserMainTableDetails(user);
 			res.json({ success: true, msg: 'Account registered! Please check your e-mail for activation link.' });
 		}
@@ -137,9 +139,11 @@ router.put('/activate/:token', function (req, res) {
 							html: 'Hello<strong> ' + user.firstname + '</strong>,<br><br>Your account has been successfully activated!'
 								+ '<br><br> Please click here to login <a href="http://localhost:4200/"></a>'
 						};
-						transporter.sendMail(email, function (err, info) {
-							if (err) console.log(err);
-						});
+						if(config.mailOptionturnOnOff){
+							transporter.sendMail(email, function (err, info) {
+								if (err) console.log(err);
+							});
+						}
 						res.json({ success: true, message: 'Account activated!' });
 					}
 				});
@@ -170,9 +174,11 @@ router.put('/resendLink', function (req, res) {
 								text: 'Hello ' + user.firstname + ', \n\n You recently requested a new account activation link. Please click on the following link to complete your activation: http://localhost:4200/activate/' + user.temporaryToken,
 								html: 'Hello<strong> ' + user.firstname + '</strong>,<br><br>You recently requested a new account activation link. Please click on the link below to complete your activation:<br><br><a href="http://localhost:4200/activate/' + user.temporaryToken + '">http://localhost:4200/activate/</a>'
 							};
-							transporter.sendMail(email, function (err, info) {
-								if (err) console.log(err);
-							});
+							if(config.mailOptionturnOnOff){
+								transporter.sendMail(email, function (err, info) {
+									if (err) console.log(err);
+								});
+							}
 							res.json({ success: true, code: 'ACTIVATIONLINKSENT', message: 'Activation link has been sent to ' + user.email + '!' });
 						}
 					});
@@ -206,9 +212,11 @@ router.put('/forgotPwd', function (req, res) {
 							html: 'Hello<strong> ' + user.firstname + '</strong>,<br><br>You recently requested password reset. Please click on the link below to reset your password:<br><br><a href="http://localhost:4200/resetPwd/' + user.temporaryToken + '">http://localhost:4200/resetPwd/</a>'
 								+ '<br><br><br>Regards,<br>HipCatC Team.'
 						};
-						transporter.sendMail(email, function (err, info) {
-							if (err) console.log(err);
-						});
+						if(config.mailOptionturnOnOff){
+							transporter.sendMail(email, function (err, info) {
+								if (err) console.log(err);
+							});
+						}
 						res.json({ success: true, code: 'ACTIVATIONLINKSENT', message: 'Password change request link has been sent to ' + user.email + '!' });
 					}
 				});
@@ -251,9 +259,11 @@ router.put('/resetPwd', function (req, res) {
 									+ '<br><br> Please click here to login <a href="http://localhost:4200/"></a>'
 									+ '<br><br> Regards<br>HipCatC Team.'
 							};
-							transporter.sendMail(email, function (err, info) {
-								if (err) console.log(err);
-							});
+							if(config.mailOptionturnOnOff){
+								transporter.sendMail(email, function (err, info) {
+									if (err) console.log(err);
+								});
+							}
 							res.json({ success: true, message: 'Your password successfully updated!' });
 						}
 					});
@@ -277,10 +287,14 @@ router.post('/authenticate', (req, res, next) => {
 				User.comparePassword(password, user.password, (err, isMatch) => {
 					if (err) throw err;
 					if (isMatch) {
-						const token = jwt.sign({ data: user }, config.secret, {
-							expiresIn: '1h' //1 hour
+						const token = jwt.sign({ username: user.username }, config.secret, {
+							expiresIn: '0.1h' //1 hour
 						});
-		
+						console.log(token);
+						user.isLoggedIn = true;
+						user.loggedInToken = token;
+						user.save(function (err) {
+						});
 						res.json({
 							success: true,
 							token: 'JWT ' + token,
@@ -291,7 +305,9 @@ router.post('/authenticate', (req, res, next) => {
 								username: user.username,
 								email: user.email,
 								contact: user.contact,
-								userType: user.userType
+								userType: user.userType,
+								loggedInToken: user.loggedInToken,
+								isLoggedIn: user.isLoggedIn
 							}
 						});
 					} else {
@@ -368,6 +384,27 @@ var insertUserMainTableDetails = function(user) {
 	}
     
 }
+
+router.put('/logout', function (req, res) {
+	User.findOne({ username: req.body.userName }).select('username email isLoggedIn').exec(function (err, user) {
+		if(err){
+			console.log({success: false, message: `Error while logout. Error: ${err}`});
+		}else{ 
+			if (user.isLoggedIn) {
+				user.isLoggedIn = false;
+				user.save(function (err) {
+					if(err){
+						console.log({success: false, message: `Error while logout: ${err}`});
+					}else{
+						console.log({success: true, message: 'user logout success'});
+					}
+				});
+			} else {
+				console.log({success: false, message: 'user logout failure'});
+			}
+		}
+	});
+});
 
 
 

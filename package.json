@@ -28,6 +28,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
+    "deasync": "^0.1.13",
     "express": "^4.16.3",
     "gridfs-stream": "^1.1.1",
     "jsonwebtoken": "^8.3.0",
